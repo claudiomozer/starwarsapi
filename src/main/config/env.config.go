@@ -14,11 +14,10 @@ type EnvVars struct {
 	DB_PASS string
 }
 
-func LoadVars(envFilePath string) (*EnvVars, error) {
-	err := godotenv.Load(envFilePath)
+func LoadVars(envFilePath string) *EnvVars {
 
-	if err != nil {
-		return nil, err
+	if envFilePath != "" {
+		godotenv.Load(envFilePath)
 	}
 
 	return &EnvVars{
@@ -27,5 +26,6 @@ func LoadVars(envFilePath string) (*EnvVars, error) {
 		DB_PORT: os.Getenv("DB_PORT"),
 		DB_USER: os.Getenv("DB_USER"),
 		DB_PASS: os.Getenv("DB_PASS"),
-	}, nil
+	}
+
 }
