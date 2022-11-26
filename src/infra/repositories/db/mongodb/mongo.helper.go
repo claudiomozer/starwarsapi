@@ -9,8 +9,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var Helper *MongoHelper
+
 type MongoHelper struct {
 	credentials *credentials
+	client      *mongo.Client
 }
 
 type credentials struct {
@@ -19,10 +22,19 @@ type credentials struct {
 	port     string
 	user     string
 	pass     string
+	uri      string // just for test porpuses
+}
+
+func (helper *MongoHelper) SetConnectionUri(uri string) {
+	helper.credentials.uri = uri
+}
+
+func (helper *MongoHelper) GetCient() *mongo.Client {
+	return helper.client
 }
 
 func NewMongoHelper(database, host, port, user, pass string) *MongoHelper {
-	return &MongoHelper{
+	Helper = &MongoHelper{
 		credentials: &credentials{
 			database: database,
 			host:     host,
@@ -31,6 +43,7 @@ func NewMongoHelper(database, host, port, user, pass string) *MongoHelper {
 			pass:     pass,
 		},
 	}
+	return Helper
 }
 
 func (helper *MongoHelper) Connect() error {
@@ -38,13 +51,20 @@ func (helper *MongoHelper) Connect() error {
 		return err
 	}
 
-	_, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(helper.getConnectionURL()))
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(helper.getConnectionURL()))
+	helper.client = client
 
 	return err
 }
 
+func (helper *MongoHelper) Disconnect() {
+	if helper.client != nil {
+		helper.client.Disconnect(context.TODO())
+	}
+}
+
 func (helper *MongoHelper) validateConnectionVars() error {
-	if helper.atLeastOneVarEmpty() {
+	if helper.atLeastOneVarEmpty() && helper.credentials.uri == "" {
 		return errors.New("Insuficient informations provided for a database connection")
 	}
 	return nil
@@ -58,6 +78,10 @@ func (helper *MongoHelper) atLeastOneVarEmpty() bool {
 }
 
 func (helper *MongoHelper) getConnectionURL() string {
+	if helper.credentials.uri != "" {
+		return helper.credentials.uri
+	}
+
 	return fmt.Sprintf("mongodb://%s:%s@%s:%s",
 		helper.credentials.user,
 		helper.credentials.pass,
