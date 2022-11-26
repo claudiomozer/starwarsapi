@@ -1,8 +1,19 @@
 package mongodb
 
-import "errors"
+import (
+	"context"
+	"errors"
+	"fmt"
+
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+)
 
 type MongoHelper struct {
+	credentials *credentials
+}
+
+type credentials struct {
 	database string
 	host     string
 	port     string
@@ -12,11 +23,13 @@ type MongoHelper struct {
 
 func NewMongoHelper(database, host, port, user, pass string) *MongoHelper {
 	return &MongoHelper{
-		database: database,
-		host:     host,
-		port:     port,
-		user:     user,
-		pass:     pass,
+		credentials: &credentials{
+			database: database,
+			host:     host,
+			port:     port,
+			user:     user,
+			pass:     pass,
+		},
 	}
 }
 
@@ -25,7 +38,9 @@ func (helper *MongoHelper) Connect() error {
 		return err
 	}
 
-	return nil
+	_, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(helper.getConnectionURL()))
+
+	return err
 }
 
 func (helper *MongoHelper) validateConnectionVars() error {
@@ -36,5 +51,17 @@ func (helper *MongoHelper) validateConnectionVars() error {
 }
 
 func (helper *MongoHelper) atLeastOneVarEmpty() bool {
-	return helper.host == "" || helper.port == "" || helper.user == "" || helper.pass == ""
+	return helper.credentials.host == "" ||
+		helper.credentials.port == "" ||
+		helper.credentials.user == "" ||
+		helper.credentials.pass == ""
+}
+
+func (helper *MongoHelper) getConnectionURL() string {
+	return fmt.Sprintf("mongodb://%s:%s@%s:%s",
+		helper.credentials.user,
+		helper.credentials.pass,
+		helper.credentials.host,
+		helper.credentials.port,
+	)
 }
