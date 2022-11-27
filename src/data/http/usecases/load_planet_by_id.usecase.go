@@ -1,6 +1,9 @@
 package httpdata
 
 import (
+	"errors"
+	"fmt"
+
 	httpdataprotocols "github.com/claudiomozer/starwarsapi/src/data/http/protocols"
 	"github.com/claudiomozer/starwarsapi/src/domain/usecases"
 )
@@ -16,5 +19,11 @@ func NewLoadPlanetByIdUseCase(repository httpdataprotocols.LoadPlanetByIdReposit
 }
 
 func (usecase *LoadPlanetByIdUseCase) Load(id int) (*usecases.PlanetDTO, error) {
-	return usecase.repository.Load(id)
+	planet, err := usecase.repository.Load(id)
+
+	if planet == nil {
+		return nil, errors.New(fmt.Sprintf("Nenhum planeta encontrado para o id: %d", id))
+	}
+
+	return planet, err
 }
