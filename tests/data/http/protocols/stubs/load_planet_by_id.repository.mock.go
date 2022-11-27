@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/claudiomozer/starwarsapi/src/domain/usecases"
+	domainmocks "github.com/claudiomozer/starwarsapi/tests/domain/mocks"
 )
 
 type LoadPlanetByIdRepositoryStub struct {
@@ -29,5 +30,5 @@ func (stub *LoadPlanetByIdRepositoryStub) Load(id int) (*usecases.PlanetDTO, err
 		return nil, nil
 	}
 
-	return nil, nil
+	return domainmocks.MockPlanetDTO(), nil
 }

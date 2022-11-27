@@ -62,3 +62,22 @@ func TestShouldReturnAnErrorIfNilPlanetIsReturned(t *testing.T) {
 		t.Error("Should return an error from repository")
 	}
 }
+
+func TestShouldReturnAPlanetOnSuccess(t *testing.T) {
+	sutParams := makeLoadPlanetSutParams()
+	sut := sutParams.sut
+	planetDTO, err := sut.Load(1)
+
+	if err != nil {
+		t.Error("Should not return an error on success")
+	}
+
+	if planetDTO == nil {
+		t.Error("Should return a planet on success")
+		return
+	}
+
+	if planetDTO.GetURL() != "https://swapi.dev/api/planets/1/" {
+		t.Error("Should return a valid planet")
+	}
+}
