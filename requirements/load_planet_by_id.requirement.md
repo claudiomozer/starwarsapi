@@ -5,7 +5,7 @@
 1. ✅ Recebe uma requisição **POST** no endpoint **/api/planets**
 2. ✅ Valida se foi recebido o parametro **id** no body da requisição
 3. ✅ Verifica se o planeta com determinada URL (URL única da API com id) já não foi importando
-4. ✅ Busca o planeta por id na API externa
+4. ✅ Busca o planeta por id na API externa <
 5. ✅ Verifica se os filmes com as URLs vinculadas ao planeta
 6. ✅ **Cria** o filme caso não existir na base de dados
 7. ✅ **Cria** o planeta no banco de dados

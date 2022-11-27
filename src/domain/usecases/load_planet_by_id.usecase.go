@@ -2,11 +2,12 @@ package usecases
 
 type PlanetDTO struct {
 	name    string
+	url     string
 	climate string
 	terrain string
 	films   []string
 }
 
 type LoadPlanetByIdUseCase interface {
-	load(id int) *PlanetDTO
+	Load(id int) (*PlanetDTO, error)
 }
