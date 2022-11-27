@@ -7,9 +7,23 @@ import (
 	httpprotocolsstub "github.com/claudiomozer/starwarsapi/tests/data/http/protocols/stubs"
 )
 
-func TestShouldCallLoadPlanetByIdRepositoryStubOnce(t *testing.T) {
+type LoadPlanetByIdSutParams struct {
+	loadPlanetByIdRepositoryStub *httpprotocolsstub.LoadPlanetByIdRepositoryStub
+	sut                          *httpdata.LoadPlanetByIdUseCase
+}
+
+func makeLoadPlanetSutParams() *LoadPlanetByIdSutParams {
 	loadPlanetByIdRepositoryStub := httpprotocolsstub.NewLoadPlanetByIdRepositoryStub()
-	sut := httpdata.NewLoadPlanetByIdUseCase(loadPlanetByIdRepositoryStub)
+	return &LoadPlanetByIdSutParams{
+		loadPlanetByIdRepositoryStub: loadPlanetByIdRepositoryStub,
+		sut:                          httpdata.NewLoadPlanetByIdUseCase(loadPlanetByIdRepositoryStub),
+	}
+}
+
+func TestShouldCallLoadPlanetByIdRepositoryStubOnce(t *testing.T) {
+	sutParams := makeLoadPlanetSutParams()
+	loadPlanetByIdRepositoryStub := sutParams.loadPlanetByIdRepositoryStub
+	sut := sutParams.loadPlanetByIdRepositoryStub
 	sut.Load(1)
 
 	if loadPlanetByIdRepositoryStub.TimesCalled == 0 {
@@ -18,9 +32,10 @@ func TestShouldCallLoadPlanetByIdRepositoryStubOnce(t *testing.T) {
 }
 
 func TestShouldReturnAnErrorIfLoadPlanetByIdRepositoryReturnsError(t *testing.T) {
-	loadPlanetByIdRepositoryStub := httpprotocolsstub.NewLoadPlanetByIdRepositoryStub()
+	sutParams := makeLoadPlanetSutParams()
+	loadPlanetByIdRepositoryStub := sutParams.loadPlanetByIdRepositoryStub
 	loadPlanetByIdRepositoryStub.ReturnError = true
-	sut := httpdata.NewLoadPlanetByIdUseCase(loadPlanetByIdRepositoryStub)
+	sut := sutParams.sut
 	planetDTO, err := sut.Load(1)
 
 	if planetDTO != nil {
