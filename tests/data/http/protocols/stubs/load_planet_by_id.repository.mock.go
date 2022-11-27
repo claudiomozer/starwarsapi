@@ -3,7 +3,7 @@ package httpprotocolsstub
 import (
 	"errors"
 
-	"github.com/claudiomozer/starwarsapi/src/domain/usecases"
+	domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
 	domainmocks "github.com/claudiomozer/starwarsapi/tests/domain/mocks"
 )
 
@@ -18,7 +18,7 @@ func NewLoadPlanetByIdRepositoryStub() *LoadPlanetByIdRepositoryStub {
 	return &LoadPlanetByIdRepositoryStub{}
 }
 
-func (stub *LoadPlanetByIdRepositoryStub) Load(id int) (*usecases.PlanetDTO, error) {
+func (stub *LoadPlanetByIdRepositoryStub) Load(id int) (*domaindto.PlanetDTO, error) {
 	stub.Id = id
 	stub.TimesCalled++
 

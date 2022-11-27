@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	httpdataprotocols "github.com/claudiomozer/starwarsapi/src/data/http/protocols"
-	"github.com/claudiomozer/starwarsapi/src/domain/usecases"
+	domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
 )
 
 type LoadPlanetByIdUseCase struct {
@@ -18,7 +18,7 @@ func NewLoadPlanetByIdUseCase(repository httpdataprotocols.LoadPlanetByIdReposit
 	}
 }
 
-func (usecase *LoadPlanetByIdUseCase) Load(id int) (*usecases.PlanetDTO, error) {
+func (usecase *LoadPlanetByIdUseCase) Load(id int) (*domaindto.PlanetDTO, error) {
 	planet, err := usecase.repository.Load(id)
 
 	if planet == nil {

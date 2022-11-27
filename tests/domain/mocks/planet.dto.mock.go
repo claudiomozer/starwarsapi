@@ -1,9 +1,9 @@
 package domainmocks
 
-import "github.com/claudiomozer/starwarsapi/src/domain/usecases"
+import domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
 
-func MockPlanetDTO() *usecases.PlanetDTO {
-	return usecases.NewPlanetDTO(
+func MockPlanetDTO() *domaindto.PlanetDTO {
+	return domaindto.NewPlanetDTO(
 		"Tatooine",
 		"https://swapi.dev/api/planets/1/",
 		"arid",

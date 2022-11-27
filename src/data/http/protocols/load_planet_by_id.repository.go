@@ -1,7 +1,7 @@
 package httpdataprotocols
 
-import "github.com/claudiomozer/starwarsapi/src/domain/usecases"
+import domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
 
 type LoadPlanetByIdRepository interface {
-	Load(id int) (*usecases.PlanetDTO, error)
+	Load(id int) (*domaindto.PlanetDTO, error)
 }
