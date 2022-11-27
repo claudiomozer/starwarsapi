@@ -37,3 +37,15 @@ func TestShouldReturnErrorIfInvalidUrlIsProvided(t *testing.T) {
 		t.Error("Should return a empty body on error")
 	}
 }
+
+func TestShouldReturn404StatusCodeWhenUnexistentResourceIsGiven(t *testing.T) {
+	status, _, err := httpclient.Get("https://swapi.dev/api/planets/0/")
+
+	if err != nil {
+		t.Error("Should not return error when 404 is returned")
+	}
+
+	if status != 404 {
+		t.Error("Should return 404 StatusCode")
+	}
+}
