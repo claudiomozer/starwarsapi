@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	httpdata "github.com/claudiomozer/starwarsapi/src/data/http/usecases"
-	httpprotocolsstub "github.com/claudiomozer/starwarsapi/tests/data/http/protocols/stubs"
+	httpprotocolsstub "github.com/claudiomozer/starwarsapi/tests/unit/data/http/protocols/stubs"
 )
 
 type LoadPlanetByIdSutParams struct {

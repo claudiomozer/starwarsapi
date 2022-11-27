@@ -16,7 +16,7 @@ func mockEnvs() {
 }
 
 func TestShouldProvidesEnvironmentVarsFromEnvFile(t *testing.T) {
-	env := config.LoadVars("../../../.env.example")
+	env := config.LoadVars("../../../../.env.example")
 
 	if env.DB_HOST != "host" {
 		t.Error("Should load exactly the same DB_HOST from env sample file")

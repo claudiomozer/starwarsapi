@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
-	domainmocks "github.com/claudiomozer/starwarsapi/tests/domain/mocks"
+	domainmocks "github.com/claudiomozer/starwarsapi/tests/unit/domain/mocks"
 )
 
 type LoadPlanetByIdRepositoryStub struct {
