@@ -16,3 +16,18 @@ func TestShouldCallLoadPlanetByIdRepositoryStubOnce(t *testing.T) {
 		t.Error("Must call LoadPlanetByIdRepositoryStub at least once")
 	}
 }
+
+func TestShouldReturnAnErrorIfLoadPlanetByIdRepositoryReturnsError(t *testing.T) {
+	loadPlanetByIdRepositoryStub := httpprotocolsstub.NewLoadPlanetByIdRepositoryStub()
+	loadPlanetByIdRepositoryStub.ReturnError = true
+	sut := httpdata.NewLoadPlanetByIdUseCase(loadPlanetByIdRepositoryStub)
+	planetDTO, err := sut.Load(1)
+
+	if planetDTO != nil {
+		t.Error("Should not return a planet if an error occours")
+	}
+
+	if err == nil {
+		t.Error("Should return an error from repository ")
+	}
+}
