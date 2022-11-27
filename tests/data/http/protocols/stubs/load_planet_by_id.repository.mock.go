@@ -10,6 +10,7 @@ type LoadPlanetByIdRepositoryStub struct {
 	Id          int
 	TimesCalled int
 	ReturnError bool
+	ReturnsNil  bool
 }
 
 func NewLoadPlanetByIdRepositoryStub() *LoadPlanetByIdRepositoryStub {
@@ -22,6 +23,10 @@ func (stub *LoadPlanetByIdRepositoryStub) Load(id int) (*usecases.PlanetDTO, err
 
 	if stub.ReturnError {
 		return nil, errors.New("error")
+	}
+
+	if stub.ReturnsNil {
+		return nil, nil
 	}
 
 	return nil, nil

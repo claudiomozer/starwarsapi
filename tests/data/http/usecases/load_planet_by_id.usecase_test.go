@@ -46,3 +46,19 @@ func TestShouldReturnAnErrorIfLoadPlanetByIdRepositoryReturnsError(t *testing.T)
 		t.Error("Should return an error from repository ")
 	}
 }
+
+func TestShouldReturnAnErrorIfNilPlanetIsReturned(t *testing.T) {
+	sutParams := makeLoadPlanetSutParams()
+	loadPlanetByIdRepositoryStub := sutParams.loadPlanetByIdRepositoryStub
+	loadPlanetByIdRepositoryStub.ReturnsNil = true
+	sut := sutParams.sut
+	planetDTO, err := sut.Load(1)
+
+	if planetDTO != nil {
+		t.Error("Should not return a planet if repository returns nils")
+	}
+
+	if err == nil {
+		t.Error("Should return an error from repository")
+	}
+}
