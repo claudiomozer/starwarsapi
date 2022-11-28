@@ -1,6 +1,7 @@
 package httprepo
 
 import (
+	"encoding/json"
 	"fmt"
 
 	domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
@@ -17,13 +18,20 @@ func NewPlanetRepository() *PlanetRepository {
 }
 
 func (repo *PlanetRepository) Load(id int) (*domaindto.PlanetDTO, error) {
-	status, _, err := Get(repo.getByIdUrl)
+	status, body, err := Get(repo.buildGetByIdURL(id))
 
 	if status == 404 {
 		return nil, nil
 	}
 
-	return nil, err
+	var planetDTO *domaindto.PlanetDTO = &domaindto.PlanetDTO{}
+	err = json.Unmarshal(body, planetDTO)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return planetDTO, err
 }
 
 func (repo *PlanetRepository) buildGetByIdURL(id int) string {

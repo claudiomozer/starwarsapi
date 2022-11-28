@@ -1,23 +1,19 @@
 package domaindto
 
 type PlanetDTO struct {
-	name    string
-	url     string
-	climate string
-	terrain string
-	films   []string
+	Name    string   `json:"name"`
+	Url     string   `json:"url"`
+	Climate string   `json:"climate"`
+	Terrain string   `json:"terrain"`
+	Films   []string `json:"films"`
 }
 
 func NewPlanetDTO(name, url, climate, terrain string, films []string) *PlanetDTO {
 	return &PlanetDTO{
-		name:    name,
-		url:     url,
-		climate: climate,
-		terrain: terrain,
-		films:   films,
+		Name:    name,
+		Url:     url,
+		Climate: climate,
+		Terrain: terrain,
+		Films:   films,
 	}
-}
-
-func (dto *PlanetDTO) GetURL() string {
-	return dto.url
 }
