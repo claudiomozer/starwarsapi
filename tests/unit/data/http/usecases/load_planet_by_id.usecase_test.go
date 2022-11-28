@@ -77,7 +77,7 @@ func TestShouldReturnAPlanetOnSuccess(t *testing.T) {
 		return
 	}
 
-	if planetDTO.GetURL() != "https://swapi.dev/api/planets/1/" {
+	if planetDTO.Url != "https://swapi.dev/api/planets/1/" {
 		t.Error("Should return a valid planet")
 	}
 }
