@@ -3,11 +3,11 @@ package httptest
 import (
 	"testing"
 
-	httpclient "github.com/claudiomozer/starwarsapi/src/infra/repositories/http"
+	httprepo "github.com/claudiomozer/starwarsapi/src/infra/repositories/http"
 )
 
 func TestShouldReturnAResponseOnSuccess(t *testing.T) {
-	status, body, err := httpclient.Get("https://swapi.dev/api/planets")
+	status, body, err := httprepo.Get("https://swapi.dev/api/planets")
 
 	if err != nil {
 		t.Error("Should not return error on success")
@@ -23,7 +23,7 @@ func TestShouldReturnAResponseOnSuccess(t *testing.T) {
 }
 
 func TestShouldReturnErrorIfInvalidUrlIsProvided(t *testing.T) {
-	status, body, err := httpclient.Get("https://invalidurl.get/invalidresource")
+	status, body, err := httprepo.Get("https://invalidurl.get/invalidresource")
 
 	if err == nil {
 		t.Error("Should return error when an invalid URL is given")
@@ -39,7 +39,7 @@ func TestShouldReturnErrorIfInvalidUrlIsProvided(t *testing.T) {
 }
 
 func TestShouldReturn404StatusCodeWhenUnexistentResourceIsGiven(t *testing.T) {
-	status, _, err := httpclient.Get("https://swapi.dev/api/planets/0/")
+	status, _, err := httprepo.Get("https://swapi.dev/api/planets/0/")
 
 	if err != nil {
 		t.Error("Should not return error when 404 is returned")
