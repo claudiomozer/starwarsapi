@@ -3,20 +3,20 @@ package httpdatatest
 import (
 	"testing"
 
-	httpdata "github.com/claudiomozer/starwarsapi/src/data/http/usecases"
-	httpprotocolsstub "github.com/claudiomozer/starwarsapi/tests/unit/data/http/protocols/stubs"
+	data "github.com/claudiomozer/starwarsapi/src/data/usecases"
+	protocolsstub "github.com/claudiomozer/starwarsapi/tests/unit/data/protocols/stubs"
 )
 
 type LoadPlanetByIdSutParams struct {
-	loadPlanetByIdRepositoryStub *httpprotocolsstub.LoadPlanetByIdRepositoryStub
-	sut                          *httpdata.LoadPlanetByIdUseCase
+	loadPlanetByIdRepositoryStub *protocolsstub.LoadPlanetByIdRepositoryStub
+	sut                          *data.LoadPlanetByIdUseCase
 }
 
 func makeLoadPlanetSutParams() *LoadPlanetByIdSutParams {
-	loadPlanetByIdRepositoryStub := httpprotocolsstub.NewLoadPlanetByIdRepositoryStub()
+	loadPlanetByIdRepositoryStub := protocolsstub.NewLoadPlanetByIdRepositoryStub()
 	return &LoadPlanetByIdSutParams{
 		loadPlanetByIdRepositoryStub: loadPlanetByIdRepositoryStub,
-		sut:                          httpdata.NewLoadPlanetByIdUseCase(loadPlanetByIdRepositoryStub),
+		sut:                          data.NewLoadPlanetByIdUseCase(loadPlanetByIdRepositoryStub),
 	}
 }
 

@@ -1,18 +1,18 @@
-package httpdata
+package data
 
 import (
 	"errors"
 	"fmt"
 
-	httpdataprotocols "github.com/claudiomozer/starwarsapi/src/data/http/protocols"
+	dataprotocols "github.com/claudiomozer/starwarsapi/src/data/protocols"
 	domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
 )
 
 type LoadPlanetByIdUseCase struct {
-	repository httpdataprotocols.LoadPlanetByIdRepository
+	repository dataprotocols.LoadPlanetByIdRepository
 }
 
-func NewLoadPlanetByIdUseCase(repository httpdataprotocols.LoadPlanetByIdRepository) *LoadPlanetByIdUseCase {
+func NewLoadPlanetByIdUseCase(repository dataprotocols.LoadPlanetByIdRepository) *LoadPlanetByIdUseCase {
 	return &LoadPlanetByIdUseCase{
 		repository: repository,
 	}

@@ -1,4 +1,4 @@
-package httpdataprotocols
+package dataprotocols
 
 import domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
 
