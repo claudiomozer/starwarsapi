@@ -9,32 +9,32 @@ import (
 )
 
 type CreateFilmsFromUrlsSutParams struct {
-	loadFilmsByUrlRepository *httpprotocolsstub.LoadFilmsByUrlRepositoryStub
-	sut                      *data.CreateFilmsFromUrlsUseCase
+	loadFilmByUrlRepository *httpprotocolsstub.LoadFilmByUrlRepositoryStub
+	sut                     *data.CreateFilmsFromUrlsUseCase
 }
 
 func makeCreateFilmsFromUrlsSutParams() *CreateFilmsFromUrlsSutParams {
-	loadFilmsByUrlRepository := makeLoadFilmsByUrlRepository()
+	loadFilmByUrlRepository := makeLoadFilmByUrlRepository()
 	return &CreateFilmsFromUrlsSutParams{
-		loadFilmsByUrlRepository: loadFilmsByUrlRepository,
-		sut:                      data.NewCreateFilmsFromUrlsUseCase(loadFilmsByUrlRepository),
+		loadFilmByUrlRepository: loadFilmByUrlRepository,
+		sut:                     data.NewCreateFilmsFromUrlsUseCase(loadFilmByUrlRepository),
 	}
 }
 
-func makeLoadFilmsByUrlRepository() *httpprotocolsstub.LoadFilmsByUrlRepositoryStub {
-	return httpprotocolsstub.NewLoadFilmsByUrlRepositoryStub()
+func makeLoadFilmByUrlRepository() *httpprotocolsstub.LoadFilmByUrlRepositoryStub {
+	return httpprotocolsstub.NewLoadFilmByUrlRepositoryStub()
 }
 
-func TestShouldCallLoadFilmsByUrlRepositoryWithCorrectURLs(t *testing.T) {
+func TestShouldCallLoadFilmByUrlRepositoryWithCorrectURLs(t *testing.T) {
 	sutParams := makeCreateFilmsFromUrlsSutParams()
 	sut := sutParams.sut
-	loadRepository := sutParams.loadFilmsByUrlRepository
+	loadRepository := sutParams.loadFilmByUrlRepository
 	filmsUrls := domainmocks.MockPlanetDTO().Films
 
 	sut.Create(filmsUrls)
 
 	if loadRepository.TimesCalled != len(filmsUrls) {
-		t.Errorf("Should call LoadFilmsByUrlRepository %d times\n", len(filmsUrls))
+		t.Errorf("Should call LoadFilmByUrlRepository %d times\n", len(filmsUrls))
 	}
 
 	for key, url := range filmsUrls {
@@ -45,10 +45,10 @@ func TestShouldCallLoadFilmsByUrlRepositoryWithCorrectURLs(t *testing.T) {
 
 }
 
-func TestShouldReturnErrorIfLoadFilmsByURLRepositoryReturnsError(t *testing.T) {
+func TestShouldReturnErrorIfLoadFilmByURLRepositoryReturnsError(t *testing.T) {
 	sutParams := makeCreateFilmsFromUrlsSutParams()
 	sut := sutParams.sut
-	loadRepository := sutParams.loadFilmsByUrlRepository
+	loadRepository := sutParams.loadFilmByUrlRepository
 	filmsUrls := domainmocks.MockPlanetDTO().Films
 	callsUntilError := 2
 	loadRepository.ReturnErrorAt = callsUntilError
@@ -56,10 +56,10 @@ func TestShouldReturnErrorIfLoadFilmsByURLRepositoryReturnsError(t *testing.T) {
 	_, err := sut.Create(filmsUrls)
 
 	if loadRepository.TimesCalled != callsUntilError {
-		t.Errorf("Should call LoadFilmsByURLRepository %d times until fail\n", callsUntilError)
+		t.Errorf("Should call LoadFilmByURLRepository %d times until fail\n", callsUntilError)
 	}
 
 	if err == nil {
-		t.Error("Should return an error when LoadFilmsByURLRepository returns error")
+		t.Error("Should return an error when LoadFilmByURLRepository returns error")
 	}
 }

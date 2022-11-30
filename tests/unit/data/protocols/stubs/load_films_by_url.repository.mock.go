@@ -6,17 +6,17 @@ import (
 	domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
 )
 
-type LoadFilmsByUrlRepositoryStub struct {
+type LoadFilmByUrlRepositoryStub struct {
 	Urls          []string
 	TimesCalled   int
 	ReturnErrorAt int
 }
 
-func NewLoadFilmsByUrlRepositoryStub() *LoadFilmsByUrlRepositoryStub {
-	return &LoadFilmsByUrlRepositoryStub{}
+func NewLoadFilmByUrlRepositoryStub() *LoadFilmByUrlRepositoryStub {
+	return &LoadFilmByUrlRepositoryStub{}
 }
 
-func (stub *LoadFilmsByUrlRepositoryStub) Load(url string) ([]domaindto.FilmDTO, error) {
+func (stub *LoadFilmByUrlRepositoryStub) Load(url string) (*domaindto.FilmDTO, error) {
 	stub.TimesCalled++
 
 	if stub.ReturnErrorAt == stub.TimesCalled {

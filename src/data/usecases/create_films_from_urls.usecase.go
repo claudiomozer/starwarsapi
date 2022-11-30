@@ -3,10 +3,10 @@ package data
 import dataprotocols "github.com/claudiomozer/starwarsapi/src/data/protocols"
 
 type CreateFilmsFromUrlsUseCase struct {
-	loadFilmsByUrlRepository dataprotocols.LoadFilmsByUrlRepository
+	loadFilmsByUrlRepository dataprotocols.LoadFilmByUrlRepository
 }
 
-func NewCreateFilmsFromUrlsUseCase(loadFilmsByUrlRepository dataprotocols.LoadFilmsByUrlRepository) *CreateFilmsFromUrlsUseCase {
+func NewCreateFilmsFromUrlsUseCase(loadFilmsByUrlRepository dataprotocols.LoadFilmByUrlRepository) *CreateFilmsFromUrlsUseCase {
 	return &CreateFilmsFromUrlsUseCase{
 		loadFilmsByUrlRepository: loadFilmsByUrlRepository,
 	}
