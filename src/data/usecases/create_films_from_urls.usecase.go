@@ -13,9 +13,11 @@ func NewCreateFilmsFromUrlsUseCase(loadFilmsByUrlRepository dataprotocols.LoadFi
 }
 
 func (usecase *CreateFilmsFromUrlsUseCase) Create(urls []string) (ids []string, err error) {
-
 	for _, url := range urls {
-		usecase.loadFilmsByUrlRepository.Load(url)
+		_, err := usecase.loadFilmsByUrlRepository.Load(url)
+		if err != nil {
+			return nil, err
+		}
 	}
 	return []string{}, nil
 }
