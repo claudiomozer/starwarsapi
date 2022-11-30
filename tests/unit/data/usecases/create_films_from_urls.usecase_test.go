@@ -44,3 +44,22 @@ func TestShouldCallLoadFilmsByUrlRepositoryWithCorrectURLs(t *testing.T) {
 	}
 
 }
+
+func TestShouldReturnErrorIfLoadFilmsByURLRepositoryReturnsError(t *testing.T) {
+	sutParams := makeCreateFilmsFromUrlsSutParams()
+	sut := sutParams.sut
+	loadRepository := sutParams.loadFilmsByUrlRepository
+	filmsUrls := domainmocks.MockPlanetDTO().Films
+	callsUntilError := 2
+	loadRepository.ReturnErrorAt = callsUntilError
+
+	_, err := sut.Create(filmsUrls)
+
+	if loadRepository.TimesCalled != callsUntilError {
+		t.Errorf("Should call LoadFilmsByURLRepository %d times until fail\n", callsUntilError)
+	}
+
+	if err == nil {
+		t.Error("Should return an error when LoadFilmsByURLRepository returns error")
+	}
+}
