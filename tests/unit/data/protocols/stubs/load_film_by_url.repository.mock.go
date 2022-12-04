@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
+	domainmocks "github.com/claudiomozer/starwarsapi/tests/unit/domain/mocks"
 )
 
 type LoadFilmByUrlRepositoryStub struct {
@@ -24,5 +25,5 @@ func (stub *LoadFilmByUrlRepositoryStub) Load(url string) (*domaindto.FilmDTO, e
 	}
 
 	stub.Urls = append(stub.Urls, url)
-	return nil, nil
+	return domainmocks.MockFilmsInTatooine()[stub.TimesCalled-1], nil
 }

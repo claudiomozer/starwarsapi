@@ -10,19 +10,26 @@ import (
 
 type CreateFilmsFromUrlsSutParams struct {
 	loadFilmByUrlRepository *httpprotocolsstub.LoadFilmByUrlRepositoryStub
+	createFilmRepository    *httpprotocolsstub.CreateFilmRepositoryStub
 	sut                     *data.CreateFilmsFromUrlsUseCase
 }
 
 func makeCreateFilmsFromUrlsSutParams() *CreateFilmsFromUrlsSutParams {
 	loadFilmByUrlRepository := makeLoadFilmByUrlRepository()
+	createFilmRepository := makeCreateFilmRepository()
 	return &CreateFilmsFromUrlsSutParams{
 		loadFilmByUrlRepository: loadFilmByUrlRepository,
-		sut:                     data.NewCreateFilmsFromUrlsUseCase(loadFilmByUrlRepository),
+		createFilmRepository:    createFilmRepository,
+		sut:                     data.NewCreateFilmsFromUrlsUseCase(loadFilmByUrlRepository, createFilmRepository),
 	}
 }
 
 func makeLoadFilmByUrlRepository() *httpprotocolsstub.LoadFilmByUrlRepositoryStub {
 	return httpprotocolsstub.NewLoadFilmByUrlRepositoryStub()
+}
+
+func makeCreateFilmRepository() *httpprotocolsstub.CreateFilmRepositoryStub {
+	return httpprotocolsstub.NewCreateFilmRepositoryStub()
 }
 
 func TestShouldCallLoadFilmByUrlRepositoryWithCorrectURLs(t *testing.T) {
@@ -61,5 +68,24 @@ func TestShouldReturnErrorIfLoadFilmByURLRepositoryReturnsError(t *testing.T) {
 
 	if err == nil {
 		t.Error("Should return an error when LoadFilmByURLRepository returns error")
+	}
+}
+
+func TestShouldCallCreateFilmRepositoryWithCorrectValues(t *testing.T) {
+	sutParams := makeCreateFilmsFromUrlsSutParams()
+	sut := sutParams.sut
+	createRepository := sutParams.createFilmRepository
+	filmsUrls := domainmocks.MockPlanetDTO().Films
+
+	sut.Create(filmsUrls)
+
+	if createRepository.TimesCalled == 0 {
+		t.Error("Should call CreateFilmRepository at least once")
+	}
+
+	for k, film := range createRepository.FilmDTOs {
+		if film.Url != filmsUrls[k] {
+			t.Errorf("Should call CreateFilm repository with %s from URL %s", film.Url, filmsUrls[k])
+		}
 	}
 }
