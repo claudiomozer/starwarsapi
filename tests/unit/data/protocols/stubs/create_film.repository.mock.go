@@ -1,6 +1,10 @@
 package httpprotocolsstub
 
-import domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
+import (
+	"errors"
+
+	domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
+)
 
 type CreateFilmRepositoryStub struct {
 	FilmDTOs      []*domaindto.FilmDTO
@@ -14,6 +18,13 @@ func NewCreateFilmRepositoryStub() *CreateFilmRepositoryStub {
 
 func (stub *CreateFilmRepositoryStub) Create(filmDTO *domaindto.FilmDTO) (id string, err error) {
 	stub.TimesCalled++
+
+	if stub.TimesCalled == stub.ReturnErrorAt {
+		id = ""
+		err = errors.New("test")
+		return
+	}
+
 	stub.FilmDTOs = append(stub.FilmDTOs, filmDTO)
 	return "", nil
 }

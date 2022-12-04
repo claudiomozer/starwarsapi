@@ -89,3 +89,25 @@ func TestShouldCallCreateFilmRepositoryWithCorrectValues(t *testing.T) {
 		}
 	}
 }
+
+func TestShouldReturnAnErrorIfCreateFilmRepositoryReturnsError(t *testing.T) {
+	sutParams := makeCreateFilmsFromUrlsSutParams()
+	sut := sutParams.sut
+	createRepository := sutParams.createFilmRepository
+	callsUntilError := 2
+	createRepository.ReturnErrorAt = callsUntilError
+
+	_, err := sut.Create(domainmocks.MockPlanetDTO().Films)
+
+	if createRepository.TimesCalled == 0 {
+		t.Error("Should call CreateFilmRepository at least once")
+	}
+
+	if err == nil {
+		t.Error("Should return an error if CreateFilmRepository returns error")
+	}
+
+	if createRepository.TimesCalled != callsUntilError {
+		t.Errorf("Should call CreateFilmRepository %d times until fail\n", callsUntilError)
+	}
+}
