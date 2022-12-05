@@ -26,10 +26,11 @@ func (usecase *CreateFilmsFromUrlsUseCase) Create(urls []string) (ids []string, 
 			return nil, err
 		}
 
-		_, err = usecase.createFilmRepository.Create(filmDTO)
+		id, err := usecase.createFilmRepository.Create(filmDTO)
 		if err != nil {
 			return nil, err
 		}
+		ids = append(ids, id)
 	}
-	return []string{}, nil
+	return
 }
