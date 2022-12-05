@@ -1,6 +1,7 @@
 package httpdatatest
 
 import (
+	"fmt"
 	"testing"
 
 	data "github.com/claudiomozer/starwarsapi/src/data/usecases"
@@ -109,5 +110,21 @@ func TestShouldReturnAnErrorIfCreateFilmRepositoryReturnsError(t *testing.T) {
 
 	if createRepository.TimesCalled != callsUntilError {
 		t.Errorf("Should call CreateFilmRepository %d times until fail\n", callsUntilError)
+	}
+}
+
+func TestShouldReturnAnArrayOfIdsOnSuccess(t *testing.T) {
+	sutParams := makeCreateFilmsFromUrlsSutParams()
+	sut := sutParams.sut
+	ids, err := sut.Create(domainmocks.MockPlanetDTO().Films)
+
+	if err != nil {
+		t.Error("Should not return an error on success")
+	}
+
+	for k, id := range ids {
+		if id != fmt.Sprintf("%d-id", k+1) {
+			t.Error("Should return the correct ids")
+		}
 	}
 }

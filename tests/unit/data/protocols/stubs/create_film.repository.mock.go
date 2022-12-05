@@ -2,6 +2,7 @@ package httpprotocolsstub
 
 import (
 	"errors"
+	"fmt"
 
 	domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
 )
@@ -26,5 +27,5 @@ func (stub *CreateFilmRepositoryStub) Create(filmDTO *domaindto.FilmDTO) (id str
 	}
 
 	stub.FilmDTOs = append(stub.FilmDTOs, filmDTO)
-	return "", nil
+	return fmt.Sprintf("%d-id", stub.TimesCalled), nil
 }
