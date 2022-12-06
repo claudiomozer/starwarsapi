@@ -1,6 +1,11 @@
 package data
 
-import dataprotocols "github.com/claudiomozer/starwarsapi/src/data/protocols"
+import (
+	"errors"
+	"fmt"
+
+	dataprotocols "github.com/claudiomozer/starwarsapi/src/data/protocols"
+)
 
 type CreateFilmsFromUrlsUseCase struct {
 	loadFilmByUrlRepository dataprotocols.LoadFilmByUrlRepository
@@ -24,6 +29,10 @@ func (usecase *CreateFilmsFromUrlsUseCase) Create(urls []string) (ids []string, 
 		filmDTO, err := usecase.loadFilmByUrlRepository.Load(url)
 		if err != nil {
 			return nil, err
+		}
+
+		if filmDTO == nil {
+			return nil, errors.New(fmt.Sprintf("Erro ao buscar filme: nenhum retorno para a URL: %s", url))
 		}
 
 		id, err := usecase.createFilmRepository.Create(filmDTO)
