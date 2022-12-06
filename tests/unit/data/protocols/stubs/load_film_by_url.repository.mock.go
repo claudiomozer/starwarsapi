@@ -8,9 +8,10 @@ import (
 )
 
 type LoadFilmByUrlRepositoryStub struct {
-	Urls          []string
-	TimesCalled   int
-	ReturnErrorAt int
+	Urls           []string
+	TimesCalled    int
+	ReturnErrorAt  int
+	ReturnsEmptyAt int
 }
 
 func NewLoadFilmByUrlRepositoryStub() *LoadFilmByUrlRepositoryStub {
@@ -22,6 +23,10 @@ func (stub *LoadFilmByUrlRepositoryStub) Load(url string) (*domaindto.FilmDTO, e
 
 	if stub.ReturnErrorAt == stub.TimesCalled {
 		return nil, errors.New("error")
+	}
+
+	if stub.ReturnsEmptyAt == stub.TimesCalled {
+		return nil, nil
 	}
 
 	stub.Urls = append(stub.Urls, url)
