@@ -24,3 +24,16 @@ func FuzzShouldReturnAnErrorIfAnInvalidURLIsGiven(f *testing.F) {
 		}
 	})
 }
+
+func TestShouldReturnEmptyIfGivenUrlDoesNotExist(t *testing.T) {
+	sut := httprepo.NewFilmRepository()
+	film, err := sut.Load("https://swapi.dev/api/films/0")
+
+	if err != nil {
+		t.Error("Should not return an error if film does not exist")
+	}
+
+	if film != nil {
+		t.Error("Film must be null")
+	}
+}
