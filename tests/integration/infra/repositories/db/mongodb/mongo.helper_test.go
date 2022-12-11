@@ -57,6 +57,7 @@ func TestShouldReturnACollectionOnSuccess(t *testing.T) {
 	sut := mongodb.NewMongoHelper("", "", "", "", "")
 	sut.SetConnectionUri(memServer.URIWithRandomDB())
 	err = sut.Connect()
+	defer sut.Disconnect()
 
 	if err != nil {
 		t.Errorf("Error while connecting with memory server: %v\n", err)
