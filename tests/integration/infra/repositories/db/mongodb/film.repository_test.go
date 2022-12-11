@@ -17,8 +17,8 @@ func connectWithMongoServer() error {
 		return err
 	}
 
-	sut := mongodb.NewMongoHelper("", "", "", "", "")
-	sut.SetConnectionUri(memServer.URIWithRandomDB())
+	sut := mongodb.NewMongoHelper("dbtest", "", "", "", "")
+	sut.SetConnectionUri(memServer.URI())
 	err = sut.Connect()
 
 	return err
@@ -30,5 +30,25 @@ func TestShouldReturnAnErrorIfThereIsNoConnection(t *testing.T) {
 
 	if err == nil {
 		t.Error("Should return an error if there is no connections")
+	}
+}
+
+func TestShouldReturnsAnIdOnSuccess(t *testing.T) {
+
+	if err := connectWithMongoServer(); err != nil {
+		t.Errorf("Error while connecting to the database:%v\n", err)
+		return
+	}
+
+	sut := mongodb.NewFilmRepository()
+
+	id, err := sut.Create(domaindto.NewFilmDTO("Test Title", "Test Director", "1999-03-01", "https://testurl.com"))
+
+	if err != nil {
+		t.Error("Should not return an error on success")
+	}
+
+	if len(id) == 0 {
+		return
 	}
 }
