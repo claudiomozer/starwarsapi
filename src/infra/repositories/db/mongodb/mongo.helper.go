@@ -89,3 +89,7 @@ func (helper *MongoHelper) getConnectionURL() string {
 		helper.credentials.port,
 	)
 }
+
+func (helper *MongoHelper) GetCollection(collectionName string) *mongo.Collection {
+	return helper.client.Database(helper.credentials.database).Collection(collectionName)
+}
