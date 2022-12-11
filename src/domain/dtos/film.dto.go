@@ -1,15 +1,15 @@
 package domaindto
 
 type FilmDTO struct {
-	Name        string
-	Director    string
-	ReleaseDate string
-	Url         string
+	Title       string `json:"title"`
+	Director    string `json:"director"`
+	ReleaseDate string `json:"release_date"`
+	Url         string `json:"url"`
 }
 
-func NewFilmDTO(name, director, release_date, url string) *FilmDTO {
+func NewFilmDTO(title, director, release_date, url string) *FilmDTO {
 	return &FilmDTO{
-		Name:        name,
+		Title:       title,
 		Director:    director,
 		ReleaseDate: release_date,
 		Url:         url,

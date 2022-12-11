@@ -1,6 +1,7 @@
 package httprepo
 
 import (
+	"encoding/json"
 	"errors"
 	"regexp"
 
@@ -19,10 +20,14 @@ func (repository *FilmRepository) Load(url string) (*domaindto.FilmDTO, error) {
 		return nil, errors.New("Impossível buscar filme na API: URL inválida")
 	}
 
-	return nil, nil
+	_, body, err := Get(url)
+	var filmDTO *domaindto.FilmDTO = &domaindto.FilmDTO{}
+	err = json.Unmarshal(body, filmDTO)
+
+	return filmDTO, err
 }
 
 func (repository *FilmRepository) isUrlInvalid(url string) bool {
-	regex := regexp.MustCompile(`https://swapi.dev/api/films/\d+$`)
+	regex := regexp.MustCompile(`https://swapi.dev/api/films/\d+/{0,1}$`)
 	return !regex.MatchString(url)
 }
