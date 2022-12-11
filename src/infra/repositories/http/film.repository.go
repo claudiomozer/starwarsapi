@@ -20,9 +20,13 @@ func (repository *FilmRepository) Load(url string) (*domaindto.FilmDTO, error) {
 		return nil, errors.New("Impossível buscar filme na API: URL inválida")
 	}
 
-	_, body, err := Get(url)
+	status, body, err := Get(url)
 	var filmDTO *domaindto.FilmDTO = &domaindto.FilmDTO{}
 	err = json.Unmarshal(body, filmDTO)
+
+	if status == 404 {
+		return nil, nil
+	}
 
 	return filmDTO, err
 }
