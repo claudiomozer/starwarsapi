@@ -44,3 +44,27 @@ func TestShouldConnectOnSuccess(t *testing.T) {
 
 	sut.Disconnect()
 }
+
+func TestShouldReturnACollectionOnSuccess(t *testing.T) {
+	memServer, err := SetupMemoryServer()
+
+	if err != nil {
+		t.Errorf("Error on setup server in memory:%v\n", err)
+		return
+	}
+	defer memServer.Stop()
+
+	sut := mongodb.NewMongoHelper("", "", "", "", "")
+	sut.SetConnectionUri(memServer.URIWithRandomDB())
+	err = sut.Connect()
+
+	if err != nil {
+		t.Errorf("Error while connecting with memory server: %v\n", err)
+	}
+
+	coll := sut.GetCollection("teste")
+
+	if coll == nil {
+		t.Error("Should return a valid collection on success")
+	}
+}
