@@ -24,7 +24,7 @@ func makeGetFilmIdByUrlRepository() *httpprotocolsstub.GetFilmIdByUrlRepositoryS
 	return httpprotocolsstub.NewGetFilmIdByUrlRepositoryStub()
 }
 
-func TestShouldCallGetFilmIdByUrlUseCaseWithTheCorrectUrl(t *testing.T) {
+func TestShouldCallGetFilmIdByUrlRepositoryWithTheCorrectUrl(t *testing.T) {
 	sutParams := MakeGetFilmIdByUrlUseCaseSutParams()
 	sut := sutParams.sut
 	getFilmIdByUrlUseCase := sutParams.getFilmIdByUrlRepository
@@ -37,5 +37,20 @@ func TestShouldCallGetFilmIdByUrlUseCaseWithTheCorrectUrl(t *testing.T) {
 
 	if getFilmIdByUrlUseCase.Url != urlTest {
 		t.Errorf("Should call GetFilmIdByUrlUseCaseRepository with: %s\n", urlTest)
+	}
+}
+
+func TestShouldReturnAnErrorIfGetFilmIdByUrlRepositoryReturnsError(t *testing.T) {
+	sutParams := MakeGetFilmIdByUrlUseCaseSutParams()
+	sut := sutParams.sut
+	sutParams.getFilmIdByUrlRepository.ReturnsError = true
+	id, err := sut.GetByUrl("url.test.com")
+
+	if id != "" {
+		t.Error("Should not return an valid id if error is returned")
+	}
+
+	if err == nil {
+		t.Error("Should return an error if GetFilmIdByUrlRepository returns error")
 	}
 }
