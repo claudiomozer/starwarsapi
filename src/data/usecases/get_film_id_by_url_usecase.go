@@ -13,6 +13,5 @@ func NewGetFilmIdByUrlUseCase(getFilmIdByUrlRepository dataprotocols.GetFilmIdBy
 }
 
 func (usecase *GetFilmIdByUrlUseCase) GetByUrl(url string) (string, error) {
-	_, err := usecase.getFilmIdByUrlRepository.GetByUrl(url)
-	return "", err
+	return usecase.getFilmIdByUrlRepository.GetByUrl(url)
 }
