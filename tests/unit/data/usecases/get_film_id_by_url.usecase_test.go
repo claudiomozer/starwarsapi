@@ -54,3 +54,18 @@ func TestShouldReturnAnErrorIfGetFilmIdByUrlRepositoryReturnsError(t *testing.T)
 		t.Error("Should return an error if GetFilmIdByUrlRepository returns error")
 	}
 }
+
+func TestShouldReturnAnEmptyIfGetFilmIdByUrlRepositoryReturnsEmpty(t *testing.T) {
+	sutParams := MakeGetFilmIdByUrlUseCaseSutParams()
+	sut := sutParams.sut
+	sutParams.getFilmIdByUrlRepository.ReturnsEmpty = true
+	id, err := sut.GetByUrl("url.test.com")
+
+	if id != "" {
+		t.Error("Should not return an valid id if empty is returned")
+	}
+
+	if err != nil {
+		t.Error("Should not return an error empty is returned")
+	}
+}

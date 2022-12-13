@@ -8,6 +8,7 @@ type GetFilmIdByUrlRepositoryStub struct {
 	Url          string
 	TimesCalled  int
 	ReturnsError bool
+	ReturnsEmpty bool
 }
 
 func NewGetFilmIdByUrlRepositoryStub() *GetFilmIdByUrlRepositoryStub {
@@ -20,6 +21,10 @@ func (stub *GetFilmIdByUrlRepositoryStub) GetByUrl(url string) (string, error) {
 
 	if stub.ReturnsError {
 		return "", errors.New("error")
+	}
+
+	if stub.ReturnsEmpty {
+		return "", nil
 	}
 
 	return "ObjectId(\"teste\")", nil
