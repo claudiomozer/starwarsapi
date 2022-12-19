@@ -31,6 +31,12 @@ func TestShouldReturnAnErrorIfThereIsNoConnection(t *testing.T) {
 	if err == nil {
 		t.Error("Should return an error if there is no connections")
 	}
+
+	_, err = sut.GetByUrl("URL")
+
+	if err == nil {
+		t.Error("Should return an error if there is no connections")
+	}
 }
 
 func TestShouldReturnsAnIdOnSuccess(t *testing.T) {
