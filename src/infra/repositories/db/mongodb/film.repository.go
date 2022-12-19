@@ -36,6 +36,13 @@ func (repo *FilmRepository) Create(filmDTO *domaindto.FilmDTO) (id string, err e
 	return objectId.String(), err
 }
 
+func (repo *FilmRepository) GetByUrl(url string) (string, error) {
+	if repo.isConnectionInvalid() {
+		return "", errors.New("Erro ao criar Film na base de dados. Nenhuma conexão com banco de dados estabelecida")
+	}
+	return "", nil
+}
+
 func (repo *FilmRepository) isConnectionInvalid() bool {
 	if Helper == nil || (Helper != nil && Helper.GetCient() == nil) {
 		return true
