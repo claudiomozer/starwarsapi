@@ -9,10 +9,15 @@ import (
 	domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type FilmRepository struct {
 	collection string
+}
+
+type singleResultFilmId struct {
+	Id string `bson:"_id"`
 }
 
 func NewFilmRepository() *FilmRepository {
@@ -60,17 +65,35 @@ func (repo *FilmRepository) getBson(filmDTO *domaindto.FilmDTO) interface{} {
 
 func (repo *FilmRepository) GetByUrl(url string) (string, error) {
 	if repo.isConnectionInvalid() {
-		return "", errors.New("Erro ao criar Film na base de dados. Nenhuma conexão com banco de dados estabelecida")
+		return "", errors.New("Erro ao buscar Film na base de dados. Nenhuma conexão com banco de dados estabelecida")
 	}
 
 	if repo.isUrlInvalid(url) {
 		return "", errors.New("Impossível buscar filme na base de dados: URL inválida")
 	}
 
-	return "", nil
+	collection := Helper.GetCollection(repo.collection)
+	singleResult := collection.FindOne(context.Background(), repo.buildGetByUrlFilter(url), repo.buildGetByUrl())
+	singleResultId := &singleResultFilmId{}
+
+	if err := singleResult.Decode(singleResultId); err != nil {
+		return "", err
+	}
+
+	return singleResultId.Id, nil
 }
 
 func (repo *FilmRepository) isUrlInvalid(url string) bool {
 	regex := regexp.MustCompile(`https://swapi.dev/api/films/\d+/{0,1}$`)
 	return !regex.MatchString(url)
+}
+
+func (repo *FilmRepository) buildGetByUrlFilter(url string) interface{} {
+	return bson.D{primitive.E{Key: "url", Value: url}}
+}
+
+func (repo *FilmRepository) buildGetByUrl() *options.FindOneOptions {
+	return &options.FindOneOptions{
+		Projection: bson.D{primitive.E{Key: "_id", Value: 1}},
+	}
 }
