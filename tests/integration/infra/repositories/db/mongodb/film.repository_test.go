@@ -78,3 +78,28 @@ func FuzzShouldReturnAnErrorIfAnInvalidURLIsGiven(f *testing.F) {
 		}
 	})
 }
+
+func TestShouldReturnAnIdOnSuccess(t *testing.T) {
+	if err := connectWithMongoServer(); err != nil {
+		t.Errorf("Error while connecting to the database:%v\n", err)
+		return
+	}
+
+	sut := mongodb.NewFilmRepository()
+	_, err := sut.Create(domaindto.NewFilmDTO("Test Title", "Test Director", "1999-03-01", "https://swapi.dev/api/films/5"))
+
+	if err != nil {
+		t.Errorf("Error while creating an mocked film at database:%v\n", err)
+		return
+	}
+
+	id, err := sut.GetByUrl("https://swapi.dev/api/films/5")
+
+	if err != nil {
+		t.Errorf("Should not return errors on success. Error: %v \n", err)
+	}
+
+	if id == "" {
+		t.Error("Should return an id on success")
+	}
+}
