@@ -7,36 +7,36 @@ import (
 	protocolsstub "github.com/claudiomozer/starwarsapi/tests/unit/data/protocols/stubs"
 )
 
-type LoadPlanetByIdSutParams struct {
-	loadPlanetByIdRepositoryStub *protocolsstub.LoadPlanetByIdRepositoryStub
-	sut                          *data.LoadPlanetByIdUseCase
+type GetPlanetByApiIdSutParams struct {
+	loadPlanetByIdRepositoryStub *protocolsstub.GetPlanetByApiIdRepositoryStub
+	sut                          *data.GetPlanetByApiIdUseCase
 }
 
-func makeLoadPlanetSutParams() *LoadPlanetByIdSutParams {
-	loadPlanetByIdRepositoryStub := protocolsstub.NewLoadPlanetByIdRepositoryStub()
-	return &LoadPlanetByIdSutParams{
+func makeGetPlanetSutParams() *GetPlanetByApiIdSutParams {
+	loadPlanetByIdRepositoryStub := protocolsstub.NewGetPlanetByApiIdRepositoryStub()
+	return &GetPlanetByApiIdSutParams{
 		loadPlanetByIdRepositoryStub: loadPlanetByIdRepositoryStub,
-		sut:                          data.NewLoadPlanetByIdUseCase(loadPlanetByIdRepositoryStub),
+		sut:                          data.NewGetPlanetByApiIdUseCase(loadPlanetByIdRepositoryStub),
 	}
 }
 
-func TestShouldCallLoadPlanetByIdRepositoryStubOnce(t *testing.T) {
-	sutParams := makeLoadPlanetSutParams()
+func TestShouldCallGetPlanetByApiIdRepositoryStubOnce(t *testing.T) {
+	sutParams := makeGetPlanetSutParams()
 	loadPlanetByIdRepositoryStub := sutParams.loadPlanetByIdRepositoryStub
 	sut := sutParams.loadPlanetByIdRepositoryStub
-	sut.Load(1)
+	sut.GetFromApi(1)
 
 	if loadPlanetByIdRepositoryStub.TimesCalled == 0 {
-		t.Error("Must call LoadPlanetByIdRepositoryStub at least once")
+		t.Error("Must call GetPlanetByApiIdRepositoryStub at least once")
 	}
 }
 
-func TestShouldReturnAnErrorIfLoadPlanetByIdRepositoryReturnsError(t *testing.T) {
-	sutParams := makeLoadPlanetSutParams()
+func TestShouldReturnAnErrorIfGetPlanetByApiIdRepositoryReturnsError(t *testing.T) {
+	sutParams := makeGetPlanetSutParams()
 	loadPlanetByIdRepositoryStub := sutParams.loadPlanetByIdRepositoryStub
 	loadPlanetByIdRepositoryStub.ReturnError = true
 	sut := sutParams.sut
-	planetDTO, err := sut.Load(1)
+	planetDTO, err := sut.GetFromApi(1)
 
 	if planetDTO != nil {
 		t.Error("Should not return a planet if an error occours")
@@ -48,11 +48,11 @@ func TestShouldReturnAnErrorIfLoadPlanetByIdRepositoryReturnsError(t *testing.T)
 }
 
 func TestShouldReturnAnErrorIfNilPlanetIsReturned(t *testing.T) {
-	sutParams := makeLoadPlanetSutParams()
+	sutParams := makeGetPlanetSutParams()
 	loadPlanetByIdRepositoryStub := sutParams.loadPlanetByIdRepositoryStub
 	loadPlanetByIdRepositoryStub.ReturnsNil = true
 	sut := sutParams.sut
-	planetDTO, err := sut.Load(1)
+	planetDTO, err := sut.GetFromApi(1)
 
 	if planetDTO != nil {
 		t.Error("Should not return a planet if repository returns nils")
@@ -64,9 +64,9 @@ func TestShouldReturnAnErrorIfNilPlanetIsReturned(t *testing.T) {
 }
 
 func TestShouldReturnAPlanetOnSuccess(t *testing.T) {
-	sutParams := makeLoadPlanetSutParams()
+	sutParams := makeGetPlanetSutParams()
 	sut := sutParams.sut
-	planetDTO, err := sut.Load(1)
+	planetDTO, err := sut.GetFromApi(1)
 
 	if err != nil {
 		t.Error("Should not return an error on success")
