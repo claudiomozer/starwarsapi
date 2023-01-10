@@ -45,10 +45,25 @@ func TestShouldReturnAnErrorIfCreatePlanetRepositoryAlsoReturns(t *testing.T) {
 	id, err := sut.Create(domainmocks.MockPlanetDbDTO())
 
 	if id != "" {
-		t.Error("Should not return a valid id on success")
+		t.Error("Should not return a valid id if error is returned")
 	}
 
 	if err == nil {
 		t.Error("Must return an error if CreatePlanetRepository returns error")
+	}
+}
+
+func TestShouldReturnAnIdOnSuccess(t *testing.T) {
+	sutParams := newCreatePlanetSutParams()
+	sut := sutParams.sut
+
+	id, err := sut.Create(domainmocks.MockPlanetDbDTO())
+
+	if id == "" {
+		t.Error("Should return a valid id on success")
+	}
+
+	if err != nil {
+		t.Error("Should not return an error on success")
 	}
 }
