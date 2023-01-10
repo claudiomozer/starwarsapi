@@ -36,3 +36,19 @@ func TestShouldCallCreatePlanetRepository(t *testing.T) {
 		t.Error("Should call CreatePlanetRepository at least once")
 	}
 }
+
+func TestShouldReturnAnErrorIfCreatePlanetRepositoryAlsoReturns(t *testing.T) {
+	sutParams := newCreatePlanetSutParams()
+	sut := sutParams.sut
+	sutParams.createPlanetSutRepository.ReturnsError = true
+
+	id, err := sut.Create(domainmocks.MockPlanetDbDTO())
+
+	if id != "" {
+		t.Error("Should not return a valid id on success")
+	}
+
+	if err == nil {
+		t.Error("Must return an error if CreatePlanetRepository returns error")
+	}
+}
