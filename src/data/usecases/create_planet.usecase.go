@@ -16,6 +16,5 @@ func NewCreatePlanetUseCase(createPlanetRepository dataprotocols.CreatePlanetRep
 }
 
 func (usecase *CreatePlanetUseCase) Create(planetDto *domaindto.PlanetDTO) (string, error) {
-	usecase.createPlanetRepository.Create(planetDto)
-	return "", nil
+	return usecase.createPlanetRepository.Create(planetDto)
 }
