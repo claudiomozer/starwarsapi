@@ -17,3 +17,19 @@ func MockPlanetDTO() *domaindto.PlanetDTO {
 		},
 	)
 }
+
+func MockPlanetDbDTO() *domaindto.PlanetDTO {
+	return domaindto.NewPlanetDTO(
+		"Tatooine",
+		"https://swapi.dev/api/planets/1/",
+		"arid",
+		"desert",
+		[]string{
+			"ObjectId('somefilmid')",
+			"ObjectId('somefilmid')",
+			"ObjectId('somefilmid')",
+			"ObjectId('somefilmid')",
+			"ObjectId('somefilmid')",
+		},
+	)
+}
