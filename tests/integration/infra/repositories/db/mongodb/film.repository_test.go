@@ -10,20 +10,6 @@ import (
 
 var memServer *memongo.Server
 
-func connectWithMongoServer() error {
-	memServer, err := SetupMemoryServer()
-
-	if err != nil {
-		return err
-	}
-
-	sut := mongodb.NewMongoHelper("dbtest", "", "", "", "")
-	sut.SetConnectionUri(memServer.URI())
-	err = sut.Connect()
-
-	return err
-}
-
 func TestShouldReturnAnErrorIfThereIsNoConnection(t *testing.T) {
 	sut := mongodb.NewFilmRepository()
 	_, err := sut.Create(domaindto.NewFilmDTO("", "", "", ""))
@@ -41,7 +27,7 @@ func TestShouldReturnAnErrorIfThereIsNoConnection(t *testing.T) {
 
 func TestShouldReturnsAnIdOnSuccess(t *testing.T) {
 
-	if err := connectWithMongoServer(); err != nil {
+	if err := ConnectWithMongoServer(); err != nil {
 		t.Errorf("Error while connecting to the database:%v\n", err)
 		return
 	}
@@ -80,7 +66,7 @@ func FuzzShouldReturnAnErrorIfAnInvalidURLIsGiven(f *testing.F) {
 }
 
 func TestShouldReturnAnIdOnSuccess(t *testing.T) {
-	if err := connectWithMongoServer(); err != nil {
+	if err := ConnectWithMongoServer(); err != nil {
 		t.Errorf("Error while connecting to the database:%v\n", err)
 		return
 	}
