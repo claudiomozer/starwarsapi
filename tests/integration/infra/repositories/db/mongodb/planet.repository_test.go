@@ -62,3 +62,23 @@ func TestShouldCreateAPlanetOnSuccess(t *testing.T) {
 		t.Error("May not return an error on success")
 	}
 }
+
+func FuzzShouldPlanetRepositoryReturnAnErrorIfAnInvalidURLIsGiven(f *testing.F) {
+	f.Add("https://invalidurl.com.br/invalid/route")
+	f.Add("https://swapi.dev/api/planets/e")
+	f.Add("https://swapi.dev/api/planets/#")
+	f.Add("http://swapi.dev/api/planets/5")
+	f.Add("https://swapi.dev/api/planets/5e3e3")
+	f.Add("https://swapi.dev/api/planets/53^")
+	f.Add("https://swapi.dev/api/planets/a53")
+	f.Add("http://swapi.dev/api/planets/5/4")
+
+	f.Fuzz(func(t *testing.T, invalidUrl string) {
+		sut := mongodb.NewFilmRepository()
+		_, err := sut.GetByUrl(invalidUrl)
+
+		if err == nil {
+			t.Error("Should return an error when an invalid URL is given")
+		}
+	})
+}
