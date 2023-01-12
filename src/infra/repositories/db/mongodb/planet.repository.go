@@ -35,3 +35,11 @@ func (repo *PlanetRepository) Create(planetDto *domaindto.PlanetDTO) (string, er
 	objectId := result.InsertedID.(primitive.ObjectID)
 	return objectId.String(), err
 }
+
+func (repo *PlanetRepository) GetByUrl(url string) (string, error) {
+	if Helper == nil || (Helper != nil && Helper.IsConnectionInvalid()) {
+		return "", errors.New("Erro ao buscar Film na base de dados. Nenhuma conexão com banco de dados estabelecida")
+	}
+
+	return "", nil
+}
