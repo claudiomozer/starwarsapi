@@ -27,8 +27,8 @@ func NewFilmRepository() *FilmRepository {
 }
 
 func (repo *FilmRepository) Create(filmDTO *domaindto.FilmDTO) (id string, err error) {
-	if repo.isConnectionInvalid() {
-		return "", errors.New("Erro ao criar Film na base de dados. Nenhuma conexão com banco de dados estabelecida")
+	if Helper == nil || (Helper != nil && Helper.IsConnectionInvalid()) {
+		return "", errors.New("Erro ao criar filme na base de dados. Nenhuma conexão com banco de dados estabelecida")
 	}
 
 	collection := Helper.GetCollection(repo.collection)
@@ -42,18 +42,6 @@ func (repo *FilmRepository) Create(filmDTO *domaindto.FilmDTO) (id string, err e
 	return objectId.String(), err
 }
 
-func (repo *FilmRepository) isConnectionInvalid() bool {
-	if Helper == nil || (Helper != nil && Helper.GetCient() == nil) {
-		return true
-	}
-
-	if err := Helper.GetCient().Ping(context.TODO(), nil); err != nil {
-		return true
-	}
-
-	return false
-}
-
 func (repo *FilmRepository) getBson(filmDTO *domaindto.FilmDTO) interface{} {
 	return bson.D{
 		primitive.E{Key: "title", Value: filmDTO.Title},
@@ -64,7 +52,7 @@ func (repo *FilmRepository) getBson(filmDTO *domaindto.FilmDTO) interface{} {
 }
 
 func (repo *FilmRepository) GetByUrl(url string) (string, error) {
-	if repo.isConnectionInvalid() {
+	if Helper == nil || (Helper != nil && Helper.IsConnectionInvalid()) {
 		return "", errors.New("Erro ao buscar Film na base de dados. Nenhuma conexão com banco de dados estabelecida")
 	}
 

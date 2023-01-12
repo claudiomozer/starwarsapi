@@ -93,3 +93,15 @@ func (helper *MongoHelper) getConnectionURL() string {
 func (helper *MongoHelper) GetCollection(collectionName string) *mongo.Collection {
 	return helper.client.Database(helper.credentials.database).Collection(collectionName)
 }
+
+func (helper *MongoHelper) IsConnectionInvalid() bool {
+	if Helper.GetCient() == nil {
+		return true
+	}
+
+	if err := Helper.GetCient().Ping(context.TODO(), nil); err != nil {
+		return true
+	}
+
+	return false
+}
