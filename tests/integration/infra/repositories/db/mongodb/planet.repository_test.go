@@ -82,3 +82,28 @@ func FuzzShouldPlanetRepositoryReturnAnErrorIfAnInvalidURLIsGiven(f *testing.F) 
 		}
 	})
 }
+
+func TestShouldPlanetRepositoryReturnAnIdOnSuccess(t *testing.T) {
+	if err := ConnectWithMongoServer(); err != nil {
+		t.Errorf("Error while connecting to the database:%v\n", err)
+		return
+	}
+
+	sut := mongodb.NewPlanetRepository()
+	_, err := sut.Create(domaindto.NewPlanetDTO("Test Planet", "https://swapi.dev/api/films/5", "arid", "arid", []string{"ObjectId(\"teste\")"}))
+
+	if err != nil {
+		t.Errorf("Error while creating an mocked planet at database:%v\n", err)
+		return
+	}
+
+	id, err := sut.GetByUrl("https://swapi.dev/api/films/5")
+
+	if err != nil {
+		t.Errorf("Should not return errors on success. Error: %v \n", err)
+	}
+
+	if id == "" {
+		t.Error("Should return an id on success")
+	}
+}
