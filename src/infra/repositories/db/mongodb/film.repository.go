@@ -32,7 +32,7 @@ func (repo *FilmRepository) Create(filmDTO *domaindto.FilmDTO) (id string, err e
 	}
 
 	collection := Helper.GetCollection(repo.collection)
-	result, err := collection.InsertOne(context.TODO(), repo.getBson(filmDTO))
+	result, err := collection.InsertOne(context.TODO(), *filmDTO)
 
 	if err != nil {
 		return "", errors.New(fmt.Sprintf("Erro ao inserir Film na base de dados: %v\n", err))
@@ -40,15 +40,6 @@ func (repo *FilmRepository) Create(filmDTO *domaindto.FilmDTO) (id string, err e
 
 	objectId := result.InsertedID.(primitive.ObjectID)
 	return objectId.String(), err
-}
-
-func (repo *FilmRepository) getBson(filmDTO *domaindto.FilmDTO) interface{} {
-	return bson.D{
-		primitive.E{Key: "title", Value: filmDTO.Title},
-		primitive.E{Key: "director", Value: filmDTO.Director},
-		primitive.E{Key: "release_date", Value: filmDTO.ReleaseDate},
-		primitive.E{Key: "url", Value: filmDTO.Url},
-	}
 }
 
 func (repo *FilmRepository) GetByUrl(url string) (string, error) {
