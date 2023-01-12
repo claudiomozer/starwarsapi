@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"regexp"
 
 	domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
+	infrahelpers "github.com/claudiomozer/starwarsapi/src/infra/helpers"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -47,7 +47,7 @@ func (repo *FilmRepository) GetByUrl(url string) (string, error) {
 		return "", errors.New("Erro ao buscar Film na base de dados. Nenhuma conexão com banco de dados estabelecida")
 	}
 
-	if repo.isUrlInvalid(url) {
+	if infrahelpers.IsUrlInvalid(url) {
 		return "", errors.New("Impossível buscar filme na base de dados: URL inválida")
 	}
 
@@ -60,11 +60,6 @@ func (repo *FilmRepository) GetByUrl(url string) (string, error) {
 	}
 
 	return singleResultId.Id, nil
-}
-
-func (repo *FilmRepository) isUrlInvalid(url string) bool {
-	regex := regexp.MustCompile(`https://swapi.dev/api/films/\d+/{0,1}$`)
-	return !regex.MatchString(url)
 }
 
 func (repo *FilmRepository) buildGetByUrlFilter(url string) interface{} {
