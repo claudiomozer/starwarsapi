@@ -10,7 +10,7 @@ import (
 
 var memServer *memongo.Server
 
-func TestShouldReturnAnErrorIfThereIsNoConnection(t *testing.T) {
+func TestShouldFilmRepositoryReturnAnErrorIfThereIsNoConnection(t *testing.T) {
 	sut := mongodb.NewFilmRepository()
 	_, err := sut.Create(domaindto.NewFilmDTO("", "", "", ""))
 
@@ -25,7 +25,7 @@ func TestShouldReturnAnErrorIfThereIsNoConnection(t *testing.T) {
 	}
 }
 
-func TestShouldReturnsAnIdOnSuccess(t *testing.T) {
+func TestShouldFilmRepositoryReturnsAnIdOnSuccess(t *testing.T) {
 
 	if err := ConnectWithMongoServer(); err != nil {
 		t.Errorf("Error while connecting to the database:%v\n", err)
@@ -45,7 +45,7 @@ func TestShouldReturnsAnIdOnSuccess(t *testing.T) {
 	}
 }
 
-func FuzzShouldReturnAnErrorIfAnInvalidURLIsGiven(f *testing.F) {
+func FuzzShouldFilmRepositoryReturnAnErrorIfAnInvalidURLIsGiven(f *testing.F) {
 	f.Add("https://invalidurl.com.br/invalid/route")
 	f.Add("https://swapi.dev/api/films/e")
 	f.Add("https://swapi.dev/api/films/#")
@@ -65,7 +65,7 @@ func FuzzShouldReturnAnErrorIfAnInvalidURLIsGiven(f *testing.F) {
 	})
 }
 
-func TestShouldReturnAnIdOnSuccess(t *testing.T) {
+func TestShouldFilmRepositoryReturnAnIdOnSuccess(t *testing.T) {
 	if err := ConnectWithMongoServer(); err != nil {
 		t.Errorf("Error while connecting to the database:%v\n", err)
 		return
