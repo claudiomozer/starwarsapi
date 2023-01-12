@@ -53,7 +53,7 @@ func TestShouldReturnAnErrorIfCreatePlanetRepositoryAlsoReturns(t *testing.T) {
 	}
 }
 
-func TestShouldReturnAnIdOnSuccess(t *testing.T) {
+func TestShouldReturnAFilmIdOnSuccess(t *testing.T) {
 	sutParams := newCreatePlanetSutParams()
 	sut := sutParams.sut
 

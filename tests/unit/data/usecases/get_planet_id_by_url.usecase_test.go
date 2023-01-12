@@ -69,3 +69,17 @@ func TestShouldReturnAnEmptyIfGetPlanetIdByUrlRepositoryReturnsEmpty(t *testing.
 		t.Error("Should not return an error empty is returned")
 	}
 }
+
+func TestShouldReturnAValidPlanetIdOnSuccess(t *testing.T) {
+	sutParams := MakeGetFilmIdByUrlUseCaseSutParams()
+	sut := sutParams.sut
+
+	id, err := sut.GetByUrl("url.test.com")
+	if id == "" {
+		t.Error("Should return a valid id on success")
+	}
+
+	if err != nil {
+		t.Error("Should not return an error on success")
+	}
+}
