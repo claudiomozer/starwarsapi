@@ -7,7 +7,9 @@ import (
 
 	domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
 	infrahelpers "github.com/claudiomozer/starwarsapi/src/infra/helpers"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type PlanetRepository struct {
@@ -18,6 +20,10 @@ func NewPlanetRepository() *PlanetRepository {
 	return &PlanetRepository{
 		collection: "planets",
 	}
+}
+
+type singleResultPlanetId struct {
+	Id string `bson:"_id"`
 }
 
 func (repo *PlanetRepository) Create(planetDto *domaindto.PlanetDTO) (string, error) {
@@ -46,5 +52,23 @@ func (repo *PlanetRepository) GetByUrl(url string) (string, error) {
 		return "", errors.New("Impossível buscar filme na base de dados: URL inválida")
 	}
 
-	return "", nil
+	collection := Helper.GetCollection(repo.collection)
+	singleResult := collection.FindOne(context.Background(), repo.buildGetByUrlFilter(url), repo.buildGetByUrl())
+	singleResultId := &singleResultPlanetId{}
+
+	if err := singleResult.Decode(singleResultId); err != nil {
+		return "", err
+	}
+
+	return singleResultId.Id, nil
+}
+
+func (repo *PlanetRepository) buildGetByUrlFilter(url string) interface{} {
+	return bson.D{primitive.E{Key: "url", Value: url}}
+}
+
+func (repo *PlanetRepository) buildGetByUrl() *options.FindOneOptions {
+	return &options.FindOneOptions{
+		Projection: bson.D{primitive.E{Key: "_id", Value: 1}},
+	}
 }
