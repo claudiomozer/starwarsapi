@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	domaindto "github.com/claudiomozer/starwarsapi/src/domain/dtos"
+	infrahelpers "github.com/claudiomozer/starwarsapi/src/infra/helpers"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -39,6 +40,10 @@ func (repo *PlanetRepository) Create(planetDto *domaindto.PlanetDTO) (string, er
 func (repo *PlanetRepository) GetByUrl(url string) (string, error) {
 	if Helper == nil || (Helper != nil && Helper.IsConnectionInvalid()) {
 		return "", errors.New("Erro ao buscar Film na base de dados. Nenhuma conexão com banco de dados estabelecida")
+	}
+
+	if infrahelpers.IsUrlInvalid(url) {
+		return "", errors.New("Impossível buscar filme na base de dados: URL inválida")
 	}
 
 	return "", nil
