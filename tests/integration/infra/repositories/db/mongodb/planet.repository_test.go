@@ -20,6 +20,17 @@ func TestShouldReturnAnErrorIfThereIsNoConnetion(t *testing.T) {
 	if err == nil {
 		t.Error("Must return an error if there is no connection")
 	}
+
+	id, err = sut.GetByUrl("URL")
+
+	if err == nil {
+		t.Error("Should return an error if there is no connections")
+	}
+
+	if id != "" {
+		t.Error("Should not return an id if there is no connection")
+	}
+
 }
 
 func TestShouldCreateAPlanetOnSuccess(t *testing.T) {
