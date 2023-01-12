@@ -39,3 +39,18 @@ func TestShouldCallGetPlanetIdByUrlRepositoryWithTheCorrectUrl(t *testing.T) {
 		t.Errorf("Should call GetPlanetIdByUrlUseCaseRepository with: %s\n", urlTest)
 	}
 }
+
+func TestShouldReturnAnErrorIfGetPlanetIdByUrlRepositoryReturnsError(t *testing.T) {
+	sutParams := MakeGetPlanetIdByUrlUseCaseSutParams()
+	sut := sutParams.sut
+	sutParams.getPlanetIdByUrlRepository.ReturnsError = true
+	id, err := sut.GetByUrl("url.test.com")
+
+	if id != "" {
+		t.Error("Should not return an valid id if error is returned")
+	}
+
+	if err == nil {
+		t.Error("Should return an error if GetPlanetIdByUrlRepository returns error")
+	}
+}
